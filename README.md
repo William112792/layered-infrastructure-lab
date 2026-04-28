@@ -19,6 +19,8 @@ This is a **live, functional environment**, not a theoretical build.
 
 # 🌐 Environments
 
+![Environments](https://github.com/William112792/layered-infrastructure-lab/blob/main/diagrams/environments.png?raw=true)
+
 ## 🧪 Test Environment (Development Validation)
 
 * http://testme.wmg-pve.duckdns.org
