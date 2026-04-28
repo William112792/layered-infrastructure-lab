@@ -1,0 +1,17 @@
+services:
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    environment:
+      - PUID=3000
+      - PGID=3000
+      - TZ=US/Eastern
+      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - /mnt/nas_pool/calibreweb/config_calibreweb:/config
+      - /mnt/nas_pool/calibreweb/data_calibreweb:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+networks: {}
