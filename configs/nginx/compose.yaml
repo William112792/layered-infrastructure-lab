@@ -1,0 +1,13 @@
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    container_name: npm
+    ports:
+      - 35080:80
+      - 35081:81
+      - 35443:443
+    volumes:
+      - /mnt/nas_pool/nginx/data_nginx:/data
+      - /mnt/nas_pool/nginx/encrypt_nginx:/etc/letsencrypt
+networks: {}
