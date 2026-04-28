@@ -1,0 +1,13 @@
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    network_mode: host
+    environment:
+      - TZ= 'America/New_York'
+      - SUBDOMAINS=dmsk,wmg-pve
+      - TOKEN=abcdefgh-abcd-abcd-abcd-abcdefghijkl
+      - LOG_FILE=false
+    volumes:
+      - /mnt/nas_pool/dns/config_dns:/config #optional
+    restart: unless-stopped
