@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "env": "prod",
+  "message": "Live environment — stable"
+}
