@@ -279,6 +279,85 @@ User → DuckDNS → Nginx → Environment Container → Storage (TrueNAS) → D
 
 ---
 
+# ⚙️ Example Configurations (Compose + App Definitions)
+
+This repository includes **real, working configuration files** used to deploy and manage the environment across all layers.
+
+These are not placeholders — they reflect the **actual infrastructure powering each environment**.
+
+---
+
+## 🐳 Core Infrastructure (Docker Compose)
+
+### Networking & Core Services
+
+* DuckDNS (Dynamic DNS)
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/DuckDNS/compose.yaml
+
+* Nginx (Reverse Proxy / Routing Engine)
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nginx/compose.yaml
+
+* Tailscale (Private Network Access)
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/tailscale/compose.yaml
+
+---
+
+### 📦 Application Services
+
+* Calibre-Web (Example Hosted Application)
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/calibreweb/compose.yaml
+
+---
+
+### 🌐 Environment-Specific Web Applications
+
+Each environment runs its own **isolated Node.js container**, using separate compose definitions:
+
+* **Test Environment**
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_test/compose.yaml
+
+* **QA Environment**
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_qa/compose.yaml
+
+* **Production Environment**
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_prod/compose.yaml
+
+---
+
+## 🧩 Application-Level Configuration (Per Environment)
+
+Each Node.js environment includes **custom application configuration** to simulate real Dev/QA/Prod behavior differences.
+
+### 🔖 Banner Configuration (Environment Identification)
+
+Defines visible environment indicators (e.g., TEST / QA / PROD banners in UI):
+
+* Test
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_test/app/banner.json
+
+* QA
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_qa/app/banner.json
+
+* Production
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_prod/app/banner.json
+
+---
+
+### 📦 Application Runtime Definitions
+
+Defines dependencies and runtime behavior per environment:
+
+* Test
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_test/app/package.json
+
+* QA
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_qa/app/package.json
+
+* Production
+  https://github.com/William112792/layered-infrastructure-lab/blob/main/configs/nodejs_web_prod/app/package.json
+
+---
+
 # 🚀 Future Enhancements
 
 * Full CI/CD automation (GitHub Actions)
@@ -293,6 +372,7 @@ User → DuckDNS → Nginx → Environment Container → Storage (TrueNAS) → D
 # 👤 Author
 
 Billy Gordon
+
 Endpoint Automation Engineer
 
 Focus Areas:
