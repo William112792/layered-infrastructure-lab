@@ -1,5 +1,7 @@
 # 🧱 Layered Infrastructure & Automation Lab
 
+![Architecture](https://github.com/William112792/layered-infrastructure-lab/blob/main/diagrams/architecture.png?raw=true)
+
 This repository demonstrates a **real-world, multi-layered infrastructure design** built to showcase:
 
 - Network segmentation
