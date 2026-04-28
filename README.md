@@ -2,258 +2,289 @@
 
 ![Architecture](https://github.com/William112792/layered-infrastructure-lab/blob/main/diagrams/architecture.png?raw=true)
 
-This repository demonstrates a **real-world, multi-layered infrastructure design** built to showcase:
+This repository demonstrates a **multi-layered infrastructure platform** with **environment-based deployment strategy**, designed to reflect real-world Dev/Test/QA/Prod practices.
 
-- Network segmentation
-- Virtualization architecture
-- Storage abstraction
-- Containerized workloads
-- Reverse proxy and routing design
-- Public + private access models
+It showcases:
 
-This is not theoretical — each layer is implemented and actively used.
+* Layered infrastructure design (Virtualization → Storage → Containers → Apps)
+* Environment segmentation (Test / QA / Prod / Cloud)
+* Reverse proxy and routing strategy
+* Containerized workload orchestration
+* Public vs private access models
+* Foundation for CI/CD pipeline integration
 
----
-
-# 🌐 Live Entry Points
-
-## Public Resume / Portfolio
-- https://william112792.github.io/
-
-## Reverse Proxy / Redirect Example
-- http://me.wmg-pve.duckdns.org/ → Redirects to GitHub resume
-
-## Application Access Example
-- http://books.dmsk.duckdns.org/ → Calibre-Web (when online)
+This is a **live, functional environment**, not a theoretical build.
 
 ---
 
-# 🌍 Domain & Routing Strategy
+# 🌐 Environments
 
-## DuckDNS Domains
+## 🧪 Test Environment (Development Validation)
 
-- `dmsk.duckdns.org` → Application routing
-- `wmg-pve.duckdns.org` → Infrastructure + redirect control
+* http://testme.wmg-pve.duckdns.org
+* Hosted locally (Dockge → Node.js container)
 
-### Purpose
-- External access routing
-- Reverse proxy mapping
-- Environment segmentation
-- Redirect handling
+**Purpose**
+
+* Feature testing
+* Rapid iteration
+* Breaking changes allowed
 
 ---
 
-# 🖥️ Physical Infrastructure Layer
+## 🧬 QA Environment (Pre-Production Validation)
 
-## Custom Server Node
+* http://qame.wmg-pve.duckdns.org
+* Hosted locally (Dockge → Node.js container)
 
-### Hardware Design
-- NAS Board (multi-drive support)  
-  https://www.amazon.com/gp/product/B0FNQM7PWR
+**Purpose**
 
-- Rackmount Chassis  
-  https://www.amazon.com/gp/product/B09HLCNKM3
+* Integration testing
+* Regression validation
+* Pre-release verification
 
-### Goals
-- Scalability
-- Drive expansion
-- Segmented workloads
-- Persistent storage layer
+---
+
+## 🛡️ Production Environment (Self-Hosted)
+
+* http://prodme.wmg-pve.duckdns.org
+* Hosted locally (Dockge → Node.js container)
+
+**Purpose**
+
+* Stable production workloads
+* Mirrors real-world deployment behavior
+* Controlled updates only
+
+---
+
+## ☁️ Canonical Cloud Environment (GitHub Pages)
+
+* https://william112792.github.io/
+
+**Purpose**
+
+* Public-facing portfolio
+* Global availability via CDN
+* Acts as **authoritative production reference**
+
+---
+
+## 🔁 Primary Access Endpoint
+
+* http://me.wmg-pve.duckdns.org
+
+**Behavior**
+
+* Redirects → GitHub Pages (Cloud Environment)
+* Simplified user entry point
+
+---
+
+# 🔄 Environment Strategy
+
+| Environment | Hosting        | Stability | Purpose                       |
+| ----------- | -------------- | --------- | ----------------------------- |
+| Test        | Local (Dockge) | Low       | Development / experimentation |
+| QA          | Local (Dockge) | Medium    | Validation / staging          |
+| Prod        | Local (Dockge) | High      | Self-hosted production        |
+| Cloud       | GitHub Pages   | Highest   | Public canonical version      |
 
 ---
 
 # 🧩 Layered Architecture
 
-This environment is intentionally built in **stacked layers**, each with a defined responsibility.
-
----
-
 ## 🔷 Layer 1 — Virtualization (Proxmox)
 
-### Purpose
-- Hypervisor / VM orchestration
-- Resource control
-- Hardware abstraction
+**Purpose**
 
-### Key Features
-- Drive pass-through
-- Manual serial assignment
-- Snapshot control
-- ISO boot for recovery
-- SMART monitoring visibility
+* Hypervisor and VM orchestration
+* Hardware abstraction
 
-### Concept Demonstrated
-- Enterprise virtualization fundamentals (VMWare ESXi equivalent)
+**Capabilities**
+
+* Disk pass-through
+* Snapshot management
+* Resource isolation
 
 ---
 
 ## 🔷 Layer 2 — Storage (TrueNAS VM)
 
-### Purpose
-- Centralized storage management
-- RAID configuration
-- Data redundancy
+**Purpose**
 
-### Requirements
-- Serial numbers passed from Proxmox
-- Disk-level awareness
+* Centralized storage abstraction
+* RAID and redundancy management
 
-### Concept Demonstrated
-- Storage abstraction
-- RAID design
-- Dependency on lower-layer hardware mapping
+**Concepts Demonstrated**
+
+* Storage pooling
+* Disk-level visibility
+* Dependency on virtualization layer
 
 ---
 
 ## 🔷 Layer 3 — Container Orchestration (Dockge)
 
-### Purpose
-- Lightweight container management
-- Docker-style deployments
-- Environment variable control
+**Purpose**
 
-### Features
-- Compose-style configuration
-- Rapid deployment of services
-- Simplified container lifecycle management
+* Manage containerized workloads
+* Environment-specific deployments
 
-### Concept Demonstrated
-- Containerization fundamentals
-- Environment-based configuration
+**Key Role in Environments**
 
----
+* Hosts:
 
-## 🔷 Layer 4 — Application Layer (Containers)
-
-### Purpose
-- Deliver functional services
-- Share resources efficiently
-- Maintain isolation between apps
-
-### Storage Integration
-- Uses TrueNAS pools
-- Monitors:
-  - Disk usage
-  - Cleanup per application
-
-### Concept Demonstrated
-- Resource sharing with isolation
-- Storage-aware application deployment
+  * Test containers
+  * QA containers
+  * Production containers
 
 ---
 
-# 🌐 Networking & Access Layer
+## 🔷 Layer 4 — Application Layer (Node.js Containers)
 
-## Nginx (Reverse Proxy + Redirect Engine)
+Each environment runs as an **independent container instance**:
 
-### Functions
-- Reverse proxy routing
-- Domain-based application access
-- HTTP → HTTPS redirection
-- External → internal mapping
+* Test → Port 3001
+* QA → Port 3002
+* Prod → Port 3003
 
----
+**Characteristics**
 
-## Example Configurations
-
-### Redirect
-
-http://me.wmg-pve.duckdns.org/
-
-→ https://william112792.github.io/
-
-
-### Reverse Proxy
-
-http://books.dmsk.duckdns.org/
-
-→ Calibre-Web container
-
+* Isolated runtime per environment
+* Same codebase, different deployment stages
+* Controlled promotion between environments
 
 ---
 
-# 📦 Application Stack
+# 🌐 Networking & Routing Layer
 
-## Deployed Containers
+## Nginx (Reverse Proxy + Traffic Control)
 
-- **WikiJS** → Internal knowledgebase
-- **Calibre-Web** → Book management
-- **Plex** → Media streaming
-- **Tailscale** → Private network access
-- **DuckDNS Automation** → Dynamic DNS updates
-- **Custom VPN Containers** → Segmented routing
+**Core Functions**
+
+* Domain-based routing
+* Reverse proxy to containers
+* HTTP → HTTPS handling
+* 301/302 redirects
+* Centralized entry point
+
+---
+
+## Domain Routing Logic
+
+| Domain                     | Destination             |
+| -------------------------- | ----------------------- |
+| testme.wmg-pve.duckdns.org | Test Container          |
+| qame.wmg-pve.duckdns.org   | QA Container            |
+| prodme.wmg-pve.duckdns.org | Prod Container          |
+| me.wmg-pve.duckdns.org     | Redirect → GitHub Pages |
+| william112792.github.io    | Cloud Environment       |
+
+---
+
+# 🔄 Deployment & Pipeline Concept
+
+This environment models a **progressive deployment pipeline**:
+
+```text
+Code Change
+   ↓
+Test Environment (Auto Deploy / Rapid Iteration)
+   ↓
+QA Environment (Validation / Regression Testing)
+   ↓
+Production Environment (Controlled Release)
+   ↓
+Cloud Publish (GitHub Pages - Canonical)
+```
+
+### Pipeline Intent
+
+* Enforce environment separation
+* Validate before promotion
+* Maintain stable production baseline
+* Provide globally accessible final version
 
 ---
 
 # 🔐 Access Model
 
 ## Public Access
-- Limited endpoints exposed via Nginx
-- Example:
-  - Calibre-Web (selectively online)
 
----
+* Controlled via Nginx
+* Only selected services exposed
 
 ## Private Access (Tailscale)
 
-### Purpose
-- Secure internal access
-- Avoid exposing sensitive services publicly
-
-### Benefits
-- Encrypted network tunnel
-- Device-based access control
-- Zero-trust style networking
+* Secure internal services
+* Zero-trust style connectivity
+* No public exposure required
 
 ---
 
-# 🧠 Design Philosophy
+# 📦 Supporting Infrastructure
 
-This environment is built around:
+## Containers
 
-## 1. Layered Separation
-Each layer has a **single responsibility**
+* WikiJS (knowledgebase)
+* Calibre-Web
+* Plex
+* VPN services
+* DuckDNS automation
 
-## 2. Controlled Exposure
-- Public access is intentional
-- Sensitive services remain private
+## Networking
 
-## 3. Scalability
-- Add containers without redesigning system
-- Expand storage independently
+* DuckDNS for dynamic DNS
+* Tailscale for private networking
 
-## 4. Observability
-- Storage visibility via TrueNAS
-- VM-level control via Proxmox
+---
 
-## 5. Real-World Parity
+# 🧠 Design Principles
+
+### 1. Environment Isolation
+
+Each environment operates independently to prevent cross-impact.
+
+### 2. Layered Responsibility
+
+Each layer serves a single purpose:
+
+* Compute
+* Storage
+* Orchestration
+* Application
+* Access
+
+### 3. Controlled Exposure
+
+* Public endpoints are intentional
+* Internal systems remain private
+
+### 4. Real-World Alignment
+
 Mirrors enterprise patterns:
-- Hypervisor → Storage → Containers → Apps → Access Layer
+
+* Dev → QA → Prod → Cloud
 
 ---
 
 # 🔄 End-to-End Flow
 
-id="infra-flow"
-User Request → DuckDNS → Nginx → Container → Storage (TrueNAS) → Disk (Proxmox Host)
-
----
-
-# ⚙️ Key Takeaways
-- Virtualization enables full system control
-- Storage must be abstracted and validated
-- Containers provide scalability and isolation
-- Reverse proxy enables controlled exposure
-- Private networking (Tailscale) reduces risk surface
+```text
+User → DuckDNS → Nginx → Environment Container → Storage (TrueNAS) → Disk (Proxmox Host)
+```
 
 ---
 
 # 🚀 Future Enhancements
-- Automated container deployment pipelines
-- Monitoring stack (Prometheus / Grafana)
-- Centralized logging
-- AI-driven infrastructure insights
-- Backup and replication strategies
+
+* Full CI/CD automation (GitHub Actions)
+* Automated environment promotion
+* Infrastructure as Code (Terraform / Ansible)
+* Monitoring stack (Prometheus / Grafana)
+* Centralized logging
+* Backup and replication strategy
 
 ---
 
@@ -262,8 +293,9 @@ User Request → DuckDNS → Nginx → Container → Storage (TrueNAS) → Disk 
 Billy Gordon
 Endpoint Automation Engineer
 
-Focused on:
+Focus Areas:
 
-- Automation-first infrastructure
-- Scalable system design
-- Secure and segmented environments
+* Endpoint Automation (Intune / Autopilot)
+* Infrastructure Design
+* Dev/Test/Prod Lifecycle Strategy
+* Containerized Environments
