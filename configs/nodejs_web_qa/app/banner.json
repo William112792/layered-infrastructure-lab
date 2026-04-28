@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "env": "qa",
+  "message": "Validation environment — may contain changes under review"
+}
